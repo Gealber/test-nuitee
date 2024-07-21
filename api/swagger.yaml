@@ -1,0 +1,90 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Nuitee test api
+  description: Nuitee api
+  contact:
+    name: Gealber
+    email: gealbermorales@gmail.com
+servers:
+  - url: http://localhost:8080
+paths:
+  /hotels:
+    get:
+      tags:
+        - Rates
+      summary: Endpoint to check the hotels cheapest rate availability
+      description: Endpoint to check the hotels cheapest rate availability
+      operationId: getHotels
+      parameters:
+        - in: query
+          name: checkin
+          schema:
+            type: string
+            format: date
+            example: "2024-03-15"
+        - in: query
+          name: checkout
+          schema:
+            type: string
+            format: date
+            example: "2024-03-16"
+        - in: query
+          name: currency
+          schema:
+            type: string
+            example: "USD"
+        - in: query
+          name: guestNationality
+          schema:
+            type: string
+            example: "US"
+        - in: query
+          name: hotelIds
+          schema:
+            type: array
+            items:
+              type: integer
+            example: [129410,105360,106101,1762514,106045,1773908,105389,1790375,1735444,1780872,1717734,105406,105328,229436,105329,1753277]
+        - in: query
+          name: occupancies
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                rooms:
+                  type: integer
+                  example: 2
+                adult:
+                  type: integer
+                  example: 2
+          
+      responses:
+        '200':
+          description: available hotels rates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateResponse'
+
+components:
+  schemas:
+    RateResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              hotelId:
+                type: string
+                example: "1780872"
+              currency:
+                type: string
+                example: "USD"
+              price:
+                type: number
+                format: float
+                example: 270.99
